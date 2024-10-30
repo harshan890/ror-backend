@@ -18,7 +18,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_DB: memee-dev
+          POSTGRES_DB: test_db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 1234
         options: >-
@@ -28,7 +28,7 @@ jobs:
           --health-retries=5
 
     env:
-      RAILS_ENV: development
+      RAILS_ENV: test
       DATABASE_URL: "postgres://postgres:1234@localhost:5432/test_db"
 
     steps:
@@ -47,11 +47,11 @@ jobs:
 
       - name: Set up database
         run: |
-          cp config/database.yml.example config/database.yml
-          bundle exec rails db:setup RAILS_ENV=development
+          cp config/database.yml config/database.yml
+          bundle exec rails db:setup RAILS_ENV=test
 
       - name: Precompile assets
         run: bundle exec rails assets:precompile
 
       - name: Run tests
-        run: bundle exec rails development
+        run: bundle exec rails test
