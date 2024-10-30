@@ -15,7 +15,7 @@ class Api::V1::ApiController < ActionController::API
         @decoded = JsonWebTokenService.decode(header)
         @current_user = User.find_by_id(@decoded[:user_id]) || User.find_by_email(@decoded[:email])
       rescue ActiveRecord::RecordNotFound => e
-        render json: { message: 'Invalid Authentication' }, status: :unauthorized
+        render json: { message: 'Invalid Authentication is good' }, status: :unauthorized
       rescue JWT::DecodeError => e
         render json: { message: 'Invalid Authentication' }, status: :unauthorized
       end
