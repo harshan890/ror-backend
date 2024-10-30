@@ -47,7 +47,6 @@ jobs:
 
       - name: Set up database
         run: |
-          cp config/database.yml.example config/database.yml
           bundle exec rails db:setup RAILS_ENV=test
 
       - name: Precompile assets
