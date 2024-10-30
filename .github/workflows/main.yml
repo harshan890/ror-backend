@@ -1,4 +1,4 @@
-name: Ruby on Rails CI
+name: Rails CI
 
 on:
   push:
@@ -13,15 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      # Define a PostgreSQL service for the database
       postgres:
         image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_DB: myapp_test
         ports:
           - 5432:5432
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s
@@ -30,25 +29,29 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgresql://postgres:1234@localhost:5432/myapp_test"
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/test_db"
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.0.0 # specify your Ruby version
-        bundler-cache: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0
 
-    - name: Install dependencies
-      run: bundle install
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
 
-    - name: Set up database
-      run: |
-        bin/rails db:create
-        bin/rails db:schema:load
+      - name: Set up database
+        run: |
+          cp config/database.yml.example config/database.yml
+          bundle exec rails db:setup RAILS_ENV=test
 
-    - name: Run tests
-      run: bundle exec rspec # Or `rails test` if using Minitest
+      - name: Precompile assets
+        run: bundle exec rails assets:precompile
+
+      - name: Run tests
+        run: bundle exec rails test
