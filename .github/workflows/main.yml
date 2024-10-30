@@ -47,7 +47,7 @@ jobs:
 
       - name: Set up database
         run: |
-          bundle exec rails db:setup RAILS_ENV=test
+          bundle exec rails db:create db:migrate RAILS_ENV=test
 
       - name: Precompile assets
         run: bundle exec rails assets:precompile
