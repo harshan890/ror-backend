@@ -30,7 +30,7 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/myapp_test"
+      DATABASE_URL: "postgresql://postgres:1234@localhost:5432/myapp_test"
 
     steps:
     - name: Checkout code
@@ -39,7 +39,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0 # specify your Ruby version
+        ruby-version: 3.0.0 # specify your Ruby version
         bundler-cache: true
 
     - name: Install dependencies
