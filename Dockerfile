@@ -14,7 +14,7 @@ zlib1g-dev \
 build-essential \
 curl 
 
-# Set the working directory
+# Set the working directory is here
 WORKDIR /myapp
 
 # Copy the Gemfile and Gemfile.lock
