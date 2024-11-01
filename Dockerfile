@@ -1,4 +1,4 @@
-# Use the official Ruby image with version 3.0.0
+# USes the official Ruby image with version 3.0.0
 FROM ruby:3.0.0
 
 # Set bundle path
