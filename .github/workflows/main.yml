@@ -28,9 +28,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # Step 1: Checkout the code (to get docker-compose.yml file)
-#      - name: Checkout code
-#       uses: actions/checkout@v2
+     #  Step 1: Checkout the code (to get docker-compose.yml file)
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       # Step 2: Log in to Docker Hub
       - name: Log in to Docker Hub
@@ -38,9 +38,7 @@ jobs:
 
       # Step 3: Stop and remove existing containers, if any
       - name: Bring down any existing containers
-        run: |
-          docker-compose pull
-          docker-compose up -d
+        run: docker-compose down
 
       # Step 4: Pull and Start the Services with Docker Compose
       - name: Deploy with Docker Compose
