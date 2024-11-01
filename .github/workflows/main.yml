@@ -42,3 +42,9 @@ jobs:
         run: |
           docker-compose pull        # Pulls the latest image from Docker Hub
           docker-compose up -d       # Starts services in detached mode
+
+      # Step 5: Remove specific images after deployment (optional)
+      - name: Clean up Docker images
+        run: |
+          docker rmi harshan536/ruby-v || true  # Remove specific image, ignore errors if not present
+          docker image prune -f                  # Remove all dangling images
