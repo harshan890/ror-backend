@@ -44,7 +44,7 @@ jobs:
           docker-compose pull
           docker-compose up -d
 
-      # Step 5: Remove specific images after deployment (optional)
+      # Step 5: Remove  images after deployment (optional)
       - name: Clean up Docker images
         run: |
           docker rmi harshan536/ruby-v || true  # Remove specific image, ignore errors if not present
