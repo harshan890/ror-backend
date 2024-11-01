@@ -34,15 +34,15 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Step 3: Stop and remove existing containers, if any
-      - name: Bring down any existing containers
-        run: docker-compose down
+      - name: List files
+        run: ls -al /home/ubuntu/ror-backend  # Check the contents of the directory
 
-      # Step 4: Pull and Start the Services with Docker Compose
       - name: Deploy with Docker Compose
+        working-directory: /home/ubuntu/ror-backend  # Specify the correct working directory
         run: |
-          docker-compose pull        # Pulls the latest image from Docker Hub
-          docker-compose up -d       # Starts services in detached mode
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d
 
       # Step 5: Remove specific images after deployment (optional)
       - name: Clean up Docker images
