@@ -22,11 +22,12 @@ jobs:
         run: docker push harshan536/ruby-v
 
   deploy:
+    needs: build-and-push
     runs-on: self-hosted
 
     steps:
      #  Step 1: Checkout the code (to get docker-compose.yml file)
-    #  - name: Checkout code
+     # - name: Checkout code
      #   uses: actions/checkout@v2
 
       # Step 2: Log in to Docker Hub
