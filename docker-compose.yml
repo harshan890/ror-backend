@@ -1,0 +1,30 @@
+services:
+  rails:
+    build: .
+    command: bash -c "if [ -f /app/tmp/pids/server.pid ]; then rm -f /app/tmp/pids/server.pid; fi && bundle exec rails server -b 0.0.0.0 -p 3000"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres:1234@db:5432/dev
+      REDIS_URL: redis://redis:6379/0
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: dev
+    volumes:
+      - vol-1:/var/lib/postgresql/data
+  redis:
+    container_name: immich_redis
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+volumes:
+  vol-1:
