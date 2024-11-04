@@ -4,7 +4,7 @@ FROM ruby:3.0.0
 # bundle Paths
 ENV BUNDLE_PATH=/gems
 
-# Install dependencies
+# Install dependencies in it
 RUN apt-get update -qq && apt-get install -y \
 nodejs \
 postgresql-client \
