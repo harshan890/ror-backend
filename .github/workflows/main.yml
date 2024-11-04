@@ -1,40 +1,40 @@
-name: Automate Ruby on Rails
+name: Deploy to Ruby on Rails
+# Environment varibales is here
+env:
+  SERVICE_NAME: ruby-app
 
 on:
   push:
     branches:
-      - 'main'
-      
+      - main
+
 jobs:
-  deploy:
+  dockerize-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Code Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install the gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          project_id: ${{ secrets.GOOGLE_PROJECT }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          export_default_credentials: true
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker
 
       - name: Build and Push Docker Image
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-          gcloud auth configure-docker us-west1-docker.pkg.dev
-          docker build -t us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/ruby:latest .
-          docker push us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/ruby:latest
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
       - name: Deploy to Cloud Run
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-          gcloud run deploy ruby-app \
-            --image us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/ruby:latest
+          gcloud run deploy \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
             --platform managed \
-            --region us-west1 \
-            --allow-unauthenticated \
-            --port 8080
-
+            --region us-central1 \
+            --allow-unauthenticated
