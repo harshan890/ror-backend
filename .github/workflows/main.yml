@@ -1,5 +1,5 @@
 name: Deploy to Ruby on Rails
-# Environment varibales is here
+# Environment varibales is here one more thing is added in here
 env:
   SERVICE_NAME: ruby-app
 
@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy \
+          gcloud run deploy $SERVICE_NAME  \
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
             --platform managed \
             --region us-central1 \
