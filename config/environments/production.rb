@@ -3,6 +3,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Allow requests from Cloud Run host
+  config.hosts << "ruby-app-314424167668.us-central1.run.app"
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
