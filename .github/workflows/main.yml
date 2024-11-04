@@ -26,14 +26,4 @@ jobs:
           gcloud auth configure-docker us-west1-docker.pkg.dev
           docker build -t us-west1-docker.pkg.dev/$GOOGLE_PROJECT/ruby/ruby:latest .
           docker push us-west1-docker.pkg.dev/$GOOGLE_PROJECT/ruby/ruby:latest
-
-      - name: Deploy to Cloud Run
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-        run: |
-          gcloud run deploy ruby-app \
-            --image us-west1-docker.pkg.dev/$GOOGLE_PROJECT/ruby/ruby:latest \
-            --platform managed \
-            --region us-west1 \
-            --allow-unauthenticated \
-            --port 8080
+          
