@@ -32,7 +32,7 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud run deploy ruby-app \
-            --image us-west1-docker.pkg.dev/resonant-time-438410-r7/demo/ruby@sha256:68ef8705788e84593a3612450a51861f6df7ca0d1e82dde36621eef3e14f7d2d
+            --image us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/ruby:latest
             --platform managed \
             --region us-west1 \
             --allow-unauthenticated \
